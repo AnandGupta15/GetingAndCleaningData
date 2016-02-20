@@ -48,5 +48,12 @@ finalDataSet[ finalDataSet$ActivityType == "6",2] = "LAYING"
 # Summarize data by groups
 attach(finalDataSet)
 SummaryDataSet <- aggregate(finalDataSet, by=list(Subject,ActivityType), FUN=mean, na.rm=TRUE)
-print(SummaryDataSet)
 detach(finalDataSet)
+
+#Drop uneccesary columns
+drops <- c("Subject","ActivityType") 
+SummaryDataSet <- SummaryDataSet[,!(names(SummaryDataSet) %in% drops)]
+names(SummaryDataSet)[names(SummaryDataSet)=="Group.1"] <- "Subject"
+names(SummaryDataSet)[names(SummaryDataSet)=="Group.2"] <- "ActivityType"
+#write output
+write.table(SummaryDataSet, "TidyData.txt") 
